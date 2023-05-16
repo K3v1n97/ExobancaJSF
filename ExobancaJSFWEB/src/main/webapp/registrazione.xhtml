@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<div class="card">
+	<h:form>
+        <h:panelGrid columns="3" cellpadding="7" styleClass="mb-3">
+        
+        	<p:outputLabel for="nome" value="Nome"/>
+            <p:inputText id="nome" value="#{utenteBean.nuovoUtente.nome}" label="Nome:" required="true" /><br />
+            
+            <p:outputLabel for="cognome" value="Cognome"/>
+            <p:inputText id="cognome" value="#{utenteBean.nuovoUtente.cognome}" label="Cognome:" required="true" /><br />
+        
+            <p:outputLabel for="dataDiNascita" value="Data di nascita"/>
+            <p:inputText id="dataDiNascita" value="#{utenteBean.nuovoUtente.dataDiNascita}" type="date" required="true" label="Data di nascita:" /><br />
+
+			<p:outputLabel for="email" value="Email"/>
+            <p:inputText id="email" value="#{utenteBean.nuovoUtente.email}" label="Email:" required="true" /><br />
+
+            <p:outputLabel for="password" value="Password"/>
+            <p:inputText id="password" value="#{utenteBean.nuovoUtente.password}" label="Password:" required="true" /><br />
+
+        </h:panelGrid>
+
+        <p:commandButton value="Registrati" action="#{utenteBean.doRegister()}" icon="pi pi-check"/>
+        <p:commandLink action="#{utenteBean.switchLoginRegister()}" update="loginRegister">Torna alla home</p:commandLink>
+    </h:form>
+</div>
+</ui:composition>

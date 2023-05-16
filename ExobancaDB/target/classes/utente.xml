@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="it.exolab.exobanca.mappers.UtenteMapper">
+
+	<insert id="insert" parameterType="it.exolab.exobanca.models.Utente" useGeneratedKeys="true" keyProperty="idUtente" keyColumn="id_utente">
+	
+		INSERT INTO UTENTE (email, password, nome, cognome, data_di_nascita, id_ruolo)
+		VALUES (
+			#{email},
+			#{password},
+			#{nome},
+			#{cognome},
+			#{dataDiNascita},
+			#{idRuolo}		
+		)
+	
+	</insert>
+	
+	<update id="update" parameterType="it.exolab.exobanca.models.Utente">
+	
+		UPDATE UTENTE SET
+			EMAIL = #{email},
+			PASSWORD = #{password},
+			NOME = #{nome},
+			COGNOME = #{cognome},
+			DATA_DI_NASCITA = #{dataDiNascita},
+			ID_RUOLO = #{idRuolo}
+		WHERE ID_UTENTE = #{idUtente}
+	
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+	
+		DELETE FROM UTENTE WHERE ID_UTENTE = #{idUtente}
+	
+	</delete>
+	
+	<select id="findById" resultMap="utenteMap"
+		parameterType="Integer">
+
+		SELECT  u.ID_UTENTE, u.EMAIL, u.PASSWORD, u.NOME, u.COGNOME, u.DATA_DI_NASCITA, r.DESCRIZIONE_RUOLO
+		FROM UTENTE AS u JOIN RUOLO AS r ON u.ID_RUOLO = r.ID_RUOLO
+		WHERE ID_UTENTE = #{idUtente}
+
+	</select>
+
+	<select id="findByEmailPassword" resultMap="utenteMap">
+	
+		SELECT u.ID_UTENTE, u.EMAIL, u.PASSWORD, u.NOME, u.COGNOME, u.DATA_DI_NASCITA, u.ID_RUOLO, r.DESCRIZIONE_RUOLO
+		FROM UTENTE AS u JOIN RUOLO AS r ON u.ID_RUOLO = r.ID_RUOLO
+		WHERE email = #{email} AND password = #{password}
+	
+	</select>
+	
+	<select id="findByEmail" resultMap="utenteMap">
+	
+		SELECT u.ID_UTENTE, u.EMAIL, u.NOME, u.COGNOME, u.DATA_DI_NASCITA, u.ID_RUOLO, r.DESCRIZIONE_RUOLO
+		FROM UTENTE AS u JOIN RUOLO AS r ON u.ID_RUOLO = r.ID_RUOLO
+		WHERE email = #{email}
+	
+	</select>
+	
+	<select id="findAllUtenti" resultMap="utenteMap" >
+	
+		SELECT  u.ID_UTENTE, u.EMAIL, u.PASSWORD, u.NOME, u.COGNOME, u.DATA_DI_NASCITA, u.ID_RUOLO, r.DESCRIZIONE_RUOLO
+		FROM UTENTE AS u JOIN RUOLO AS r ON u.ID_RUOLO = r.ID_RUOLO
+	
+	</select>
+	
+	<resultMap id="utenteMap" type="it.exolab.exobanca.models.Utente">
+		<result property="idUtente" column="ID_UTENTE" />
+		<result property="email" column="EMAIL" />
+		<result property="password" column="PASSWORD" />
+		<result property="nome" column="NOME" />
+		<result property="cognome" column="COGNOME" />
+		<result property="dataDiNascita" column="DATA_DI_NASCITA" />
+		<result property="idRuolo" column="ID_RUOLO" />
+		<association property="ruolo" javaType="it.exolab.exobanca.models.Ruolo">
+			<result property="idRuolo" column="ID_RUOLO"/>
+			<result property="descrizione" column="DESCRIZIONE_RUOLO"/>
+		</association>
+		<collection property="listaContiUtente" javaType="it.exolab.exobanca.models.ContoCorrente" >
+			<result property="idContoCorrente" column="ID_CONTO_CORRENTE" />
+			<result property="ibanContoCorrente" column="IBAN_CONTO_CORRENTE" />
+			<result property="saldoContabile" column="SALDO_CONTABILE" />
+			<result property="saldoDisponibile" column="SALDO_DISPONIBILE" />
+			<result property="idStatoContoCorrente" column="ID_STATO_CONTO_CORRENTE" />
+			<association property="statoContoCorrente" javaType="it.exolab.exobanca.models.StatoContoCorrente">
+				<result property="idStatoContoCorrente" column="ID_STATO_CONTO_CORRENTE"/>
+				<result property="descrizioneStatoConto" column="DESCRIZIONE_STATO_CONTO"/>
+			</association>
+		</collection>
+	</resultMap>
+
+</mapper>

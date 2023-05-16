@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Home Utente</title>
+</h:head>
+<body>
+	<div class="card">
+    	<p:outputPanel>
+    		<ui:include src="/navbarUtente.xhtml" />
+    	</p:outputPanel>
+    	<p:outputPanel>
+    		<ui:include src="/infoUtente.xhtml" />
+    	</p:outputPanel>
+    	<p:outputPanel style="margin-top: 10px" id="tabellaContiUtente">
+    		<p:outputPanel rendered="#{contoCorrenteBean.viewContiUtente}">
+    			<ui:include src="/tabellaContiUtente.xhtml" />
+    		</p:outputPanel>
+    	</p:outputPanel>
+	</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<head>
+	<title>Tabella Conti Utente</title>
+</head>
+	<h:form>
+    <div class="card">
+        <p:dataTable var="contoCorrente" value="#{contoCorrenteBean.listaContiUtente}">
+            <p:column headerText="Id Conto">
+                <h:outputText value="#{contoCorrente.idContoCorrente}" />
+            </p:column>
+
+            <p:column headerText="Iban Conto">
+                <h:outputText value="#{contoCorrente.ibanContoCorrente}" />
+            </p:column>
+
+            <p:column headerText="Saldo Contabile">
+                <h:outputText value="#{contoCorrente.saldoContabile}" />
+            </p:column>
+
+            <p:column headerText="Saldo Disponibile">
+                <h:outputText value="#{contoCorrente.saldoDisponibile}" />
+            </p:column>
+            
+            <p:column headerText="Stato Conto Corrente">
+                <h:outputText value="#{contoCorrente.statoContoCorrente.descrizione}" />
+            </p:column>
+            
+        </p:dataTable>
+    </div>
+</h:form>
+</ui:composition>

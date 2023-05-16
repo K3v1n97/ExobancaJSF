@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<head>
+	<title>Info New Conto</title>
+</head>
+<div class="card">
+	<p:dialog position="center" header="Riepilogo Nuovo Conto Corrente" widgetVar="dlgRiepilogoNewConto" modal="true"
+		onHide="PF('dlgNewConto').hide()">
+		<p:outputLabel value="Id Conto Corrente: " />
+		<strong><p:outputLabel value="#{contoCorrenteBean.contoCorrente}" /></strong><br />
+		<p:outputLabel value="Iban Conto Corrente: " />
+		<strong><p:outputLabel value="#{contoCorrenteBean.contoCorrente.ibanContoCorrente}" /></strong><br />
+		<p:outputLabel value="Saldo Contabile: " />
+		<strong><p:outputLabel value="#{contoCorrenteBean.contoCorrente.saldoContabile}" /></strong><br />
+		<p:outputLabel value="Saldo Disponibile: " />
+		<strong><p:outputLabel value="#{contoCorrenteBean.contoCorrente.saldoDisponibile}" /></strong><br />
+		<p:outputLabel value="Stato Conto Corrente: " />
+		<strong><p:outputLabel value="#{contoCorrenteBean.contoCorrente.statoContoCorrente.descrizione}" /></strong><br />
+		<p:commandButton style="margin-top:20px" value="Chiudi" action="#{contoCorrenteBean.loadListaContiUtente()}"
+			onclick="PF('dlgRiepilogoNewConto').hide()" />
+	</p:dialog>
+</div>
+</ui:composition>

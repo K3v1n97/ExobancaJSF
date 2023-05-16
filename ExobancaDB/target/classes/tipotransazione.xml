@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="it.exolab.exobanca.mappers.TipoTransazioneMapper">
+
+	<insert id="insert" parameterType="it.exolab.exobanca.models.TipoTransazione" useGeneratedKeys="true" keyProperty="idTipoTransazione" keyColumn="id_tipo_transazione">
+	
+		INSERT INTO TIPO_TRANSAZIONE (descrizione_tipo_transazione)
+		VALUES (
+			#{descrizioneTipoTransazione}
+		)
+	
+	</insert>
+	
+	<update id="update" parameterType="it.exolab.exobanca.models.TipoTransazione">
+	
+		UPDATE TIPO_TRANSAZIONE SET
+			DESCRIZIONE_TIPO_TRANSAZIONE = #{descrizioneTipoTransazione}
+		WHERE ID_TIPO_TRANSAZIONE = #{idTipoTransazione}
+	
+	</update>
+	
+	<select id="findById" resultMap="tipoTransazioneMap"
+		parameterType="Integer">
+		
+		SELECT *
+		FROM TIPO_TRANSAZIONE
+		WHERE ID_TIPO_TRANSAZIONE = #{idTipoTransazione}
+		
+	</select>
+	
+	<select id="findAll" resultMap="tipoTransazioneMap" parameterType="List">
+	
+		SELECT *
+		FROM TIPO_TRANSAZIONE
+	
+	</select>
+	
+	<resultMap type="it.exolab.exobanca.models.TipoTransazione" id="tipoTransazioneMap">
+		<result property="idTipoTransazione" column="ID_TIPO_TRANSAZIONE" />
+		<result property="descrizioneTipoTransazione" column="DESCRIZIONE_TIPO_TRANSAZIONE"/>
+	</resultMap>
+
+</mapper>

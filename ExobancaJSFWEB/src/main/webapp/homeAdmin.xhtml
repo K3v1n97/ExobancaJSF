@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<div class="card">
+    <h:form>
+        <p:growl id="messages"/>
+        
+            <p:submenu label="Conti Correnti" icon="pi pi-fw pi-inbox">
+                <p:menuitem value="Visualizza conti correnti" icon="pi pi-fw pi-wallet"/>
+                <p:menuitem value="Apri nuovo conto corrente" icon="pi pi-fw pi-align-right"/>
+            </p:submenu>
+
+            <p:submenu label="Profilo Utente" icon="pi pi-fw pi-user">
+                <p:menuitem value="Modifica Profilo" icon="pi pi-fw pi-user-edit"/>
+            </p:submenu>
+
+            <p:submenu label="Transazioni" icon="pi pi-fw pi-euro">
+                <p:menuitem label="Effettua Bonifico" icon="pi pi-fw pi-credit-card">
+                <p:menuitem label="Effettua Versamento" icon="pi pi-fw pi-upload">
+                <p:menuitem label="Effettua Prelievo" icon="pi pi-fw pi-download">
+            </p:submenu>
+
+            <p:divider layout="vertical"/>
+
+            <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
+
+        </p:menubar>
+    </h:form>
+</div>
+	
+</ui:composition>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="it.exolab.exobanca.mappers.ContoCorrenteMapper">
+
+	<insert id="insert" parameterType="it.exolab.exobanca.models.ContoCorrente" useGeneratedKeys="true" keyProperty="idContoCorrente" keyColumn="id_conto_corrente">
+		
+		INSERT INTO CONTO_CORRENTE (iban_conto_corrente, saldo_contabile, saldo_disponibile, id_stato_conto_corrente)
+		VALUES (
+			#{ibanContoCorrente},
+			#{saldoContabile},
+			#{saldoDisponibile},
+			#{idStatoContoCorrente}
+		)
+	
+	</insert>
+	
+	<update id="update" parameterType="it.exolab.exobanca.models.ContoCorrente">
+	
+		UPDATE CONTO_CORRENTE SET
+			IBAN_CONTO_CORRENTE = #{ibanContoCorrente},
+			INTESTATARIO = #{idIntestatario},
+			SALDO_CONTABILE = #{saldoContabile},
+			SALDO_DISPONIBILE = #{saldoDisponibile},
+			ID_STATO_CONTO_CORRENTE = #{idStatoContoCorrente}
+		WHERE ID_CONTO_CORRENTE = #{idContoCorrente}
+	
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+	
+		DELETE FROM CONTO_CORRENTE WHERE ID_CONTO_CORRENTE = #{idContoCorrente}
+	
+	</delete>
+	
+	<select id="findById" resultMap="contoCorrenteMap"
+		parameterType="Integer">
+
+		SELECT c.IBAN_CONTO_CORRENTE, u.NOME, u.COGNOME, sc.DESCRIZIONE_STATO_CONTO
+		FROM CONTO_CORRENTE AS c JOIN UTENTE AS u ON c.INTESTATARIO = u.ID_UTENTE
+		JOIN STATO_CONTO_CORRENTE AS sc ON c.ID_STATO_CONTO_CORRENTE = sc.ID_STATO_CONTO_CORRENTE
+		WHERE ID_CONTO_CORRENTE = #{idContoCorrente}
+
+	</select>
+
+	<select id="findByIban" resultMap="contoCorrenteMap"
+		parameterType="String">
+	
+		SELECT c.ID_CONTO_CORRENTE, c.IBAN_CONTO_CORRENTE, c.INTESTATARIO, u.NOME, u.COGNOME, c.SALDO_DISPONIBILE, c.SALDO_CONTABILE, c.ID_STATO_CONTO_CORRENTE, sc.DESCRIZIONE_STATO_CONTO
+		FROM CONTO_CORRENTE AS c JOIN UTENTE AS u ON c.INTESTATARIO = u.ID_UTENTE
+		JOIN STATO_CONTO_CORRENTE AS sc ON c.ID_STATO_CONTO_CORRENTE = sc.ID_STATO_CONTO_CORRENTE
+		WHERE iban_conto_corrente = #{ibanContoCorrente}
+	
+	</select>
+	
+	<select id="findAllByUtente" resultMap="contoCorrenteMap" parameterType="List">
+	
+		select cc.id_conto_corrente ,cc.iban_conto_corrente, cc.saldo_contabile, cc.saldo_disponibile, sc.descrizione_stato_conto
+		from conto_corrente as cc inner join utente_conto as uc using(id_conto_corrente)
+						  inner join utente as u on uc.id_intestatario = u.id_utente
+                          inner join stato_conto_corrente as sc ON cc.ID_STATO_CONTO_CORRENTE = sc.ID_STATO_CONTO_CORRENTE
+		where u.id_utente = #{idUtente};
+	
+	</select>
+	
+	<select id="findAll" resultMap="contoCorrenteMap" parameterType="List">
+	
+		SELECT *
+		FROM CONTO_CORRENTE
+	
+	</select>
+	
+	<resultMap id="contoCorrenteMap" type="it.exolab.exobanca.models.ContoCorrente">
+		<result property="idContoCorrente" column="ID_CONTO_CORRENTE" />
+		<result property="ibanContoCorrente" column="IBAN_CONTO_CORRENTE" />
+		<result property="saldoContabile" column="SALDO_CONTABILE" />
+		<result property="saldoDisponibile" column="SALDO_DISPONIBILE" />
+		<result property="idStatoContoCorrente" column="ID_STATO_CONTO_CORRENTE" />
+		<association property="statoContoCorrente" javaType="it.exolab.exobanca.models.StatoContoCorrente">
+			<result property="idStatoContoCorrente" column="ID_STATO_CONTO_CORRENTE"/>
+			<result property="descrizioneStatoConto" column="DESCRIZIONE_STATO_CONTO"/>
+		</association>
+		<collection property="listaIntestatari" javaType="it.exolab.exobanca.models.Utente">
+			<result property="idUtente" column="ID_UTENTE" />
+			<result property="email" column="EMAIL" />
+			<result property="password" column="PASSWORD" />
+			<result property="nome" column="NOME" />
+			<result property="cognome" column="COGNOME" />
+			<result property="dataDiNascita" column="DATA_DI_NASCITA" />
+			<result property="idRuolo" column="ID_RUOLO" />
+			<association property="ruolo" javaType="it.exolab.exobanca.models.Ruolo">
+				<result property="idRuolo" column="ID_RUOLO"/>
+				<result property="descrizione" column="DESCRIZIONE_RUOLO"/>
+			</association>
+		</collection>
+	</resultMap>
+
+</mapper>

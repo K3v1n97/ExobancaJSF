@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="it.exolab.exobanca.mappers.StatoContoMapper">
+
+	<insert id="insert" parameterType="it.exolab.exobanca.models.StatoContoCorrente" useGeneratedKeys="true" 
+	keyProperty="idStatoContoCorrente" keyColumn="id_stato_conto_corrente">
+	
+		INSERT INTO STATO_CONTO_CORRENTE (id_stato_conto_corrente, descrizione_stato_conto)
+		VALUES (
+			#{idStatoContoCorrente},
+			#{descrizioneStatoConto}		
+		)
+	
+	</insert>
+
+	<update id="update" parameterType="it.exolab.exobanca.models.StatoContoCorrente">
+	
+		UPDATE STATO_CONTO_CORRENTE SET
+			ID_STATO_CONTO_CORRENTE = #{idStatoContoCorrente},
+			DESCRIZIONE_STATO_CONTO = #{descrizioneStatoConto}
+		WHERE ID_STATO_CONTO_CORRENTE = #{idStatoContoCorrente}
+	
+	</update>
+
+	<select id="findById" resultMap="statoContoMap"
+		parameterType="Integer">
+
+		SELECT  *
+		FROM STATO_CONTO_CORRENTE
+		WHERE ID_STATO_CONTO_CORRENTE = #{idStatoContoCorrente}
+
+	</select>
+	
+	<select id="findAllStatiConti" resultMap="statoContoMap" parameterType="List">
+	
+		SELECT  *
+		FROM STATO_CONTO_CORRENTE
+	
+	</select>
+	
+	<resultMap id="statoContoMap" type="it.exolab.exobanca.models.StatoContoCorrente">
+		<result property="idStatoContoCorrente" column="ID_STATO_CONTO_CORRENTE" />
+		<result property="descrizioneStatoConto" column="DESCRIZIONE_STATO_CONTO" />
+	</resultMap>
+
+</mapper>

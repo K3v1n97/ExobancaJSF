@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<head>
+	<title>New Conto Dialog</title>
+</head>
+<div class="card">
+	<p:dialog position="center" header="Apri un nuovo Conto Corrente" widgetVar="dlgNewConto" modal="true">
+		<p:outputLabel value="Iban Conto Corrente:" /><br />
+		<strong><p:outputLabel value="#{contoCorrenteBean.contoCorrente.ibanContoCorrente}" /></strong><br />
+		<p:selectBooleanCheckbox itemLabel="Apri conto cointestato">
+			<p:ajax listener="#{contoCorrenteBean.showContoCointestato()}" update="infoCointestatari"/>
+		</p:selectBooleanCheckbox><br />
+		<p:outputPanel id="infoCointestatari">
+			<p:outputPanel rendered="#{contoCorrenteBean.contoCointestato}">
+				<p:outputLabel value="Scegli cointestatario" />
+				<p:inputText value="#{utenteBean.utenteCointestatario.email}">
+			</p:outputPanel>
+		</p:outputPanel>
+		<p:commandButton style="margin-top:20px" value="Apri conto" action="#{contoCorrenteBean.insertNewConto()}" 
+						 oncomplete="PF('dlgRiepilogoNewConto').show()" update="infoNewConto">
+		</p:commandButton>
+	</p:dialog>
+	<p:outputPanel id="infoNewConto" >
+		<p:dialog position="center" header="Riepilogo Nuovo Conto Corrente" widgetVar="dlgRiepilogoNewConto" modal="true"
+		onHide="PF('dlgNewConto').hide()">
+			<p:outputLabel value="Id Conto Corrente: " />
+			<strong><p:outputLabel value="#{contoCorrenteBean.nuovoContoCorrente.idContoCorrente}" /></strong><br />
+			<p:outputLabel value="Iban Conto Corrente: " />
+			<strong><p:outputLabel value="#{contoCorrenteBean.nuovoContoCorrente.ibanContoCorrente}" /></strong><br />
+			<p:outputLabel value="Saldo Contabile: " />
+			<strong><p:outputLabel value="#{contoCorrenteBean.nuovoContoCorrente.saldoContabile}" /></strong><br />
+			<p:outputLabel value="Saldo Disponibile: " />
+			<strong><p:outputLabel value="#{contoCorrenteBean.nuovoContoCorrente.saldoDisponibile}" /></strong><br />
+			<p:outputLabel value="Stato Conto Corrente: " />
+			<strong><p:outputLabel value="#{contoCorrenteBean.nuovoContoCorrente.statoContoCorrente.descrizione}" /></strong><br />
+			<p:commandButton style="margin-top:20px" value="Chiudi" action="#{contoCorrenteBean.loadListaContiUtente()}"
+				onclick="PF('dlgRiepilogoNewConto').hide()" update="tabellaContiUtente" />
+	</p:dialog>
+	</p:outputPanel>
+</div>
+</ui:composition>

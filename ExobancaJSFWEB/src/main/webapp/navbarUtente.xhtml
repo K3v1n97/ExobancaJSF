@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>NavBar Utente</title>
+</h:head>
+<body>
+	<div class="card">
+    	<h:form>
+        	<p:growl id="messages"/>
+        
+	        <p:menubar>
+		        <p:submenu label="Conti Correnti" icon="pi pi-fw pi-inbox">
+		            <p:menuitem value="Visualizza conti correnti" icon="pi pi-fw pi-wallet"
+		            			action="#{contoCorrenteBean.showListaContiUtente()}" update="tabellaContiUtente">
+		            	<p:ajax listener="#{contoCorrenteBean.loadListaContiUtente()}" update="tabellaContiUtente"/>
+		            </p:menuitem>
+		            <p:menuitem value="Apri nuovo conto corrente" icon="pi pi-fw pi-plus"
+		            			onclick="PF('dlgNewConto').show();"/>
+		        </p:submenu>
+		
+		        <p:submenu label="Profilo Utente" icon="pi pi-fw pi-user">
+		            <p:menuitem value="Modifica Profilo" icon="pi pi-fw pi-user-edit"/>
+		        </p:submenu>
+		
+		        <p:submenu label="Transazioni" icon="pi pi-fw pi-euro">
+		            <p:menuitem value="Effettua Bonifico" icon="pi pi-fw pi-credit-card" />
+		            <p:menuitem value="Effettua Versamento" icon="pi pi-fw pi-upload" />
+		            <p:menuitem value="Effettua Prelievo" icon="pi pi-fw pi-download" />
+		        </p:submenu>
+		
+		        <p:divider layout="vertical"/>
+		
+		        <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"
+		        			action="#{utenteBean.doLogout()}"/>
+		        
+		         <f:facet name="options">
+	                <div class="ui-input-icon-left mr-2">
+	                    <i class="pi pi-fw pi-search" />
+	                    <p:inputText placeholder="Search"/>
+	                </div>
+	            </f:facet>
+			</p:menubar>
+    	</h:form>
+	</div>
+	<div>
+		<ui:include src="/dialogNewConto.xhtml" />
+	</div>
+</body>
+</ui:composition>

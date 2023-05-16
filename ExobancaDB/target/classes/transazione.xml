@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="it.exolab.exobanca.mappers.TransazioneMapper">
+
+	<insert id="insert" parameterType="it.exolab.exobanca.models.Transazione" useGeneratedKeys="true" keyProperty="idTransazione" keyColumn="id_transazione">
+		
+		INSERT INTO TRANSAZIONE (id_conto_mittente, id_conto_destinatario, importo, data, id_tipo_transazione, id_stato_transazione)
+		VALUES (
+			#{idContoMittente},
+			#{idContoDestinatario},
+			#{importo},
+			#{dataTransazione},
+			#{idTipoTransazione},
+			#{idStatoTransazione}
+		)
+	
+	</insert>
+	
+	<update id="update" parameterType="it.exolab.exobanca.models.Transazione">
+	
+		UPDATE TRANSAZIONE SET
+			ID_CONTO_MITTENTE = #{idContoMittente},
+			ID_CONTO_DESTINATARIO = #{idContoDestinatario},
+			IMPORTO = #{importo},
+			DATA = #{dataTransazione},
+			ID_TIPO_TRANSAZIONE = #{idTipoTransazione},
+			ID_STATO_TRANSAZIONE = #{idStatoTransazione}
+		WHERE ID_TRANSAZIONE = #{idTransazione}
+	
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+	
+		DELETE FROM TRANSAZIONE WHERE ID_TRANSAZIONE = #{idTransazione}
+	
+	</delete>
+	
+	<select id="findById" resultMap="transazioneMap"
+		parameterType="Integer">
+
+		SELECT t.ID_TRANSAZIONE, cm.IBAN_CONTO_CORRENTE AS IBAN_MITTENTE, cd.IBAN_CONTO_CORRENTE AS IBAN_DESTINATARIO,
+			   t.IMPORTO, t.DATA, tt.DESCRIZIONE_TIPO_TRANSAZIONE, ts.DESCRIZIONE_STATO_TRANSAZIONE
+		FROM TRANSAZIONE AS t JOIN CONTO_CORRENTE AS cm ON t.ID_CONTO_MITTENTE = cm.ID_CONTO_CORRENTE
+		JOIN CONTO_CORRENTE AS cd ON t.ID_CONTO_DESTINATARIO = cd.ID_CONTO_CORRENTE
+		JOIN TIPO_TRANSAZIONE AS tt ON t.ID_TIPO_TRANSAZIONE = tt.ID_TIPO_TRANSAZIONE
+		JOIN STATO_TRANSAZIONE AS ts ON t.ID_STATO_TRANSAZIONE = ts.ID_STATO_TRANSAZIONE
+		WHERE ID_TRANSAZIONE = #{idTransazione}
+
+	</select>
+
+	<select id="findByMittente" resultMap="transazioneMap" parameterType="String">
+	
+		SELECT t.ID_TRANSAZIONE, cm.IBAN_CONTO_CORRENTE AS IBAN_MITTENTE, cd.IBAN_CONTO_CORRENTE AS IBAN_DESTINATARIO,
+			   t.IMPORTO, t.DATA, tt.DESCRIZIONE_TIPO_TRANSAZIONE, ts.DESCRIZIONE_STATO_TRANSAZIONE
+		FROM TRANSAZIONE AS t JOIN CONTO_CORRENTE AS cm ON t.ID_CONTO_MITTENTE = cm.ID_CONTO_CORRENTE
+		JOIN CONTO_CORRENTE AS cd ON t.ID_CONTO_DESTINATARIO = cd.ID_CONTO_CORRENTE
+		JOIN TIPO_TRANSAZIONE AS tt ON t.ID_TIPO_TRANSAZIONE = tt.ID_TIPO_TRANSAZIONE
+		JOIN STATO_TRANSAZIONE AS ts ON t.ID_STATO_TRANSAZIONE = ts.ID_STATO_TRANSAZIONE
+		WHERE cm.IBAN_CONTO_CORRENTE = #{ibanContoMittente}
+	
+	</select>
+	
+	<select id="findByDestinatario" resultMap="transazioneMap" parameterType="String">
+	
+		SELECT t.ID_TRANSAZIONE, cm.IBAN_CONTO_CORRENTE AS IBAN_MITTENTE, cd.IBAN_CONTO_CORRENTE AS IBAN_DESTINATARIO,
+			   t.IMPORTO, t.DATA, tt.DESCRIZIONE_TIPO_TRANSAZIONE, ts.DESCRIZIONE_STATO_TRANSAZIONE
+		FROM TRANSAZIONE AS t JOIN CONTO_CORRENTE AS cm ON t.ID_CONTO_MITTENTE = cm.ID_CONTO_CORRENTE
+		JOIN CONTO_CORRENTE AS cd ON t.ID_CONTO_DESTINATARIO = cd.ID_CONTO_CORRENTE
+		JOIN TIPO_TRANSAZIONE AS tt ON t.ID_TIPO_TRANSAZIONE = tt.ID_TIPO_TRANSAZIONE
+		JOIN STATO_TRANSAZIONE AS ts ON t.ID_STATO_TRANSAZIONE = ts.ID_STATO_TRANSAZIONE
+		WHERE cd.IBAN_CONTO_CORRENTE = #{ibanContoDestinatario}
+	
+	</select>
+	
+	<select id="findByTipoTransazione" resultMap="transazioneMap" parameterType="Integer">
+	
+		SELECT t.ID_TRANSAZIONE, cm.IBAN_CONTO_CORRENTE AS IBAN_MITTENTE, cd.IBAN_CONTO_CORRENTE AS IBAN_DESTINATARIO,
+			   t.IMPORTO, t.DATA, tt.DESCRIZIONE_TIPO_TRANSAZIONE, ts.DESCRIZIONE_STATO_TRANSAZIONE
+		FROM TRANSAZIONE AS t JOIN CONTO_CORRENTE AS cm ON t.ID_CONTO_MITTENTE = cm.ID_CONTO_CORRENTE
+		JOIN CONTO_CORRENTE AS cd ON t.ID_CONTO_DESTINATARIO = cd.ID_CONTO_CORRENTE
+		JOIN TIPO_TRANSAZIONE AS tt ON t.ID_TIPO_TRANSAZIONE = tt.ID_TIPO_TRANSAZIONE
+		JOIN STATO_TRANSAZIONE AS ts ON t.ID_STATO_TRANSAZIONE = ts.ID_STATO_TRANSAZIONE
+		WHERE t.ID_TIPO_TRANSAZIONE = #{idTipoTransazione}
+	
+	</select>
+	
+	<select id="findByStatoTransazione" resultMap="transazioneMap" parameterType="Integer">
+	
+		SELECT t.ID_TRANSAZIONE, cm.IBAN_CONTO_CORRENTE AS IBAN_MITTENTE, cd.IBAN_CONTO_CORRENTE AS IBAN_DESTINATARIO,
+			   t.IMPORTO, t.DATA, tt.DESCRIZIONE_TIPO_TRANSAZIONE, ts.DESCRIZIONE_STATO_TRANSAZIONE
+		FROM TRANSAZIONE AS t JOIN CONTO_CORRENTE AS cm ON t.ID_CONTO_MITTENTE = cm.ID_CONTO_CORRENTE
+		JOIN CONTO_CORRENTE AS cd ON t.ID_CONTO_DESTINATARIO = cd.ID_CONTO_CORRENTE
+		JOIN TIPO_TRANSAZIONE AS tt ON t.ID_TIPO_TRANSAZIONE = tt.ID_TIPO_TRANSAZIONE
+		JOIN STATO_TRANSAZIONE AS ts ON t.ID_STATO_TRANSAZIONE = ts.ID_STATO_TRANSAZIONE
+		WHERE t.ID_STATO_TRANSAZIONE = #{idStatoTransazione}
+	
+	</select>
+	
+	<select id="findAllTransazioni" resultMap="transazioneMap" parameterType="List">
+	
+		SELECT t.ID_TRANSAZIONE, cm.IBAN_CONTO_CORRENTE AS IBAN_MITTENTE, cd.IBAN_CONTO_CORRENTE AS IBAN_DESTINATARIO,
+			   t.IMPORTO, t.DATA, tt.DESCRIZIONE_TIPO_TRANSAZIONE, ts.DESCRIZIONE_STATO_TRANSAZIONE
+		FROM TRANSAZIONE AS t JOIN CONTO_CORRENTE AS cm ON t.ID_CONTO_MITTENTE = cm.ID_CONTO_CORRENTE
+		JOIN CONTO_CORRENTE AS cd ON t.ID_CONTO_DESTINATARIO = cd.ID_CONTO_CORRENTE
+		JOIN TIPO_TRANSAZIONE AS tt ON t.ID_TIPO_TRANSAZIONE = tt.ID_TIPO_TRANSAZIONE
+		JOIN STATO_TRANSAZIONE AS ts ON t.ID_STATO_TRANSAZIONE = ts.ID_STATO_TRANSAZIONE
+
+	
+	</select>
+	
+	
+	
+	<resultMap type="it.exolab.exobanca.models.Transazione" id="transazioneMap">
+		<result property="idTransazione" column="ID_TRANSAZIONE"/>
+		<result property="idContoMittente" column="ID_CONTO_MITTENTE"/>
+		<result property="idContoDestinatario" column="ID_CONTO_DESTINATARIO"/>
+		<result property="importo" column="IMPORTO"/>
+		<result property="dataTransazione" column="DATA"/>
+		<result property="idTipoTransazione" column="ID_TIPO_TRANSAZIONE"/>
+		<result property="idStatoTransazione" column="ID_STATO_TRANSAZIONE"/>
+		<association property="tipoTransazione" javaType="it.exolab.exobanca.models.TipoTransazione">
+			<result property="idTipoTransazione" column="ID_TIPO_TRANSAZIONE" />
+			<result property="descrizioneTipoTransazione" column="DESCRIZIONE_TIPO_TRANSAZIONE"/>
+		</association>
+		<association property="statoTransazione" javaType="it.exolab.exobanca.models.StatoTransazione">
+			<result property="idStatoTransazione" column="ID_STATO_TRANSAZIONE"/>
+			<result property="descrizioneStatoTransazione" column="DESCRIZIONE_STATO_TRANSAZIONE"/>
+		</association>
+		<association property="contoMittente" javaType="it.exolab.exobanca.models.ContoCorrente">
+			<result property="idContoCorrente" column="ID_CONTO_CORRENTE" />
+			<result property="ibanContoCorrente" column="IBAN_MITTENTE" />
+			<result property="idIntestatario" column="INTESTATARIO" />
+			<result property="saldoContabile" column="SALDO_CONTABILE" />
+			<result property="saldoDisponibile" column="SALDO_DISPONIBILE" />
+			<result property="idStatoContoCorrente" column="ID_STATO_CONTO_CORRENTE" />
+			<association property="statoContoCorrente" javaType="it.exolab.exobanca.models.StatoContoCorrente">
+				<result property="idStatoContoCorrente" column="ID_STATO_CONTO_CORRENTE"/>
+				<result property="descrizioneStatoConto" column="DESCRIZIONE_STATO_CONTO"/>
+			</association>
+			<association property="intestatario" javaType="it.exolab.exobanca.models.Utente">
+				<result property="idUtente" column="ID_UTENTE" />
+				<result property="email" column="EMAIL" />
+				<result property="password" column="PASSWORD" />
+				<result property="nome" column="NOME" />
+				<result property="cognome" column="COGNOME" />
+				<result property="dataDiNascita" column="DATA_DI_NASCITA" />
+				<result property="idRuolo" column="ID_RUOLO" />
+				<association property="ruolo" javaType="it.exolab.exobanca.models.Ruolo">
+					<result property="idRuolo" column="ID_RUOLO"/>
+					<result property="descrizione" column="DESCRIZIONE_RUOLO"/>
+				</association>
+			</association>
+		</association>
+		<association property="contoDestinatario" javaType="it.exolab.exobanca.models.ContoCorrente">
+			<result property="idContoCorrente" column="ID_CONTO_CORRENTE" />
+			<result property="ibanContoCorrente" column="IBAN_DESTINATARIO" />
+			<result property="idIntestatario" column="INTESTATARIO" />
+			<result property="saldoContabile" column="SALDO_CONTABILE" />
+			<result property="saldoDisponibile" column="SALDO_DISPONIBILE" />
+			<result property="idStatoContoCorrente" column="ID_STATO_CONTO_CORRENTE" />
+			<association property="statoContoCorrente" javaType="it.exolab.exobanca.models.StatoContoCorrente">
+				<result property="idStatoContoCorrente" column="ID_STATO_CONTO_CORRENTE"/>
+				<result property="descrizioneStatoConto" column="DESCRIZIONE_STATO_CONTO"/>
+			</association>
+			<association property="intestatario" javaType="it.exolab.exobanca.models.Utente">
+				<result property="idUtente" column="ID_UTENTE" />
+				<result property="email" column="EMAIL" />
+				<result property="password" column="PASSWORD" />
+				<result property="nome" column="NOME" />
+				<result property="cognome" column="COGNOME" />
+				<result property="dataDiNascita" column="DATA_DI_NASCITA" />
+				<result property="idRuolo" column="ID_RUOLO" />
+				<association property="ruolo" javaType="it.exolab.exobanca.models.Ruolo">
+					<result property="idRuolo" column="ID_RUOLO"/>
+					<result property="descrizione" column="DESCRIZIONE_RUOLO"/>
+				</association>
+			</association>
+		</association>
+	</resultMap>
+
+</mapper>

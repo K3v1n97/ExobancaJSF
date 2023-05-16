@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">  <!-- definizione del tipo di documento -->
+  
+<configuration>
+	
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+				<dataSource type="POOLED" >
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://127.0.0.1:3306/exobanca?useSSL=false" />
+				<property name="username" value="root" />
+				<property name="password" value="Libellulosa_97" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="utente.xml" />
+		<mapper resource="ruolo.xml"/>
+		<mapper resource="contocorrente.xml"/>
+		<mapper resource="statoconto.xml"/>
+		<mapper resource="utenteConto.xml"/> 
+		<mapper resource="transazione.xml"/>
+		<mapper resource="tipotransazione.xml"/>
+		<mapper resource="statotransazione.xml"/>
+	</mappers>
+</configuration>

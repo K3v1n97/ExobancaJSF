@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<head>
+	<title>Info Utente</title>
+</head>
+<div class="card">
+    <h3 style="margin-top:20px; margin-left:10px">Info Utente</h3>
+    <p:panelGrid columns="2">
+
+        <h:outputText value="Id:"/>
+        <h:outputText value="#{utenteBean.utente.idUtente}"/>
+
+        <h:outputText value="Nome:"/>
+        <h:outputText value="#{utenteBean.utente.nome}"/>
+
+        <h:outputText value="Cognome:"/>
+        <h:outputText value="#{utenteBean.utente.cognome}"/>
+
+        <h:outputText value="Ruolo:"/>
+        <h:outputText value="#{utenteBean.utente.ruolo.descrizione}"/>
+    </p:panelGrid>
+</div>
+</ui:composition>

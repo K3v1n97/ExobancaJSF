@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- Questo mapper serve a mappare il file xml 
+  all'interfaccia mapper della classe corripondente con i relativi metodi
+  tramite la parola namespace="" al cui interno andiamo a specificare la
+  path del package nella quale è contenuta l'interfaccia-->
+<mapper namespace="it.exolab.exobanca.mappers.StatoTransazioneMapper">
+
+	<!-- Ora vado a specificare i vari metodi rest per i servizi rest che voglio utilizzare 
+		con le varie query con la quale andremo ad interrogare il database -->
+	<!-- vado a creare il metodo crud insert tramite il tag <insert> al cui interno
+		 scriveremo la query di inserimenmto dati; al suo interno andremo a specificare:
+			- l'id con il quale verrà chiamata la query( id="" )
+			- la path del package nella quale sono contenuti gli attributi della classe 
+				che possiamo andare a valorizzare con i dati che verranno trasmessi dalla 
+				query o spassare dati dell'oggetto appartenente alla classe andando ad 
+				inserire dati nella query provenienti dall'esterno, così possiamo 
+				differenziare domande al db in base alla query che vogliamo effettuare 
+				tramite la parola parameterType="insert"
+			- se la tabella del db alla quale andiamo ad effettuare la query utilizza 
+				primary key auto generata o meno tramite la parola useGeneratedKeys="true"/"false"
+			- andare a specificare:
+				1. l'attributo della classe, alla quale appartiene l'oggetto,
+					il quale fa riferimento alla colonna primary key del db così da gestire l'inserimento
+					di dati nella colonna primary key auto generata 
+					tramite la parola keyProperty=" *nomeAttributoClasse* "
+				2. il nome della colonna primary key, così da permettere di riconoscere in
+					quale colonna viene generato autometicamente il dato che non verrà
+					specificato nella query al momento dell'inesrimento dell'oggetto
+					tramite la parola keyColumn=" *nome_colonna_primaryKey* " -->
+	<insert id="insert" parameterType="it.exolab.exobanca.models.StatoTransazione" keyProperty="idStatoTransazione" keyColumn="id_stato_transazione">
+	
+		INSERT INTO STATO_TRANSAZIONE (descrizione_stato_transazione)
+		VALUES (
+			#{descrizioneStatoTransazione}
+		)
+	
+	</insert>
+	
+	<!-- ora vado a creare il metodo crud update tramite il tag <update>, al cui interno
+		andremo a scrivere la query di update di un record della tabella del db di riferimento;
+		 al suo interno andremo a specificare:
+			- l'id con il quale verrà chiamata la query( id="update" )
+			- la path del package nella quale sono contenuti gli attributi della classe 
+				che possiamo andare a valorizzare con i dati che verranno trasmessi dalla 
+				query o spassare dati dell'oggetto appartenente alla classe andando ad 
+				inserire dati nella query provenienti dall'esterno, così possiamo 
+				differenziare domande al db in base alla query che vogliamo effettuare 
+				tramite la parola parameterType=""-->
+	<update id="update" parameterType="it.exolab.exobanca.models.StatoTransazione">
+	
+		UPDATE STATO_TRANSAZIONE SET
+			DESCRIZIONE_STATO_TRANSAZIONE = #{descrizioneStatoTransazione}
+		WHERE ID_STATO_TRANSAZIONE = #{idStatoTransazione}
+		
+	</update>
+	
+	<!-- ora vado a creare il metodo crud select tramite il tag <select>, al cui interno
+		andremo a scrivere la query "findById" di slezione di un record della tabella del
+		db di riferimento; al suo interno andremo a specificare:
+			- l'id con il quale verrà chiamato il metodo( id="findById" )
+			- la mappa di riferimento per valorizzare gli attributi della classe con i dati
+				inviati dalle colonne della tabella di riferimento che andranno a comporre
+				l'oggetto che ci restituirà in risposta alla query tramite la parola resultMap=""
+				nella quale inseriremo il nome del'id della resultmap di riferimento 
+			- il tipo di dato che verrà passato per effettuare la query, in questo caso la colonna
+				alla quale mi riferisco contiene dati di tipo Integer, quindi per completare
+				la query dovrò passare un parametro di tipo Integer, quindi all'interno di
+				parameterType adrò a scrivere parameterType="Integer" -->
+	<select id="findById" resultMap="statoTransazioneMap" 
+		parameterType="Integer">
+		
+			SELECT *
+			FROM STATO_TRANSAZIONE
+			WHERE ID_STATO_TRANSAZIONE = #{idStatoTransazione}
+		
+	</select>
+	
+	<!-- ora vado a creare il metodo crud select tramite il tag <select>, al cui interno
+		andremo a scrivere la query "findAll" di slezione di una tabella del db di riferimento; al suo interno andremo a specificare:
+			- l'id con il quale verrà chiamato il metodo( id="findAll" )
+			- la mappa di riferimento per valorizzare gli attributi della classe con i dati
+				inviati dalle colonne della tabella di riferimento che andranno a comporre
+				gli oggetti che ci restituirà in risposta alla query tramite la parola resultMap=""
+				nella quale inseriremo il nome del'id della resultmap di riferimento 
+			- il tipo di dato che verrà passato per effettuare la query, in questo caso la query
+				mi restituirà tutti i record della tabella, quindi ho bisogno di salvare gli oggetti
+				creati dai dati della tabella in un array dinamico di tipo List, quindi andrò a
+				specificare List all'interno di parameterType="List" -->
+	<select id="findAll" resultMap="statoTransazioneMap" parameterType="List">
+	
+		SELECT *
+		FROM STATO_TRANSAZIONE
+	
+	</select>
+	
+	<!-- ora vado a creare la resultMap per identificare e collegare gli attributi di una classe 
+		con le rispettive colonne della tabella mettendo così in connessione completa la classe e la tabella,
+		così facendo riusciremo a creare degli oggetti utilizzando i dati presenti in un db e passandoli
+		valorizzando gli attributi di una classe 
+		- con type="" andiamo a specificare il path della classe di appartenenza degli attributi
+		- con id="" andiamo a dare il nome alla resultMap con la quale si riferiranno i tag per
+			effettuare le query -->
+	<resultMap type="it.exolab.exobanca.models.StatoTransazione" id="statoTransazioneMap">
+		<!-- con i tag <result/> andiamo a specificare quali attributi della classe
+			appartengono a quali colonne della tabella del db;
+			al loro interno troviamo le parole:
+			- property="" nella quale andiamo ad inserire il nome dell'attributro della classe
+				specificata nel type="" del tag <resultMap>
+			- column="" nella quale andiamo ad inserire il nome della colonna della tabella del db
+				corrispondente al valore dell'attributo della classe -->
+		<result property="idStatoTransazione" column="ID_STATO_TRANSAZIONE"/>
+		<result property="descrizioneStatoTransazione" column="DESCRIZIONE_STATO_TRANSAZIONE"/>
+	</resultMap>
+
+</mapper>
